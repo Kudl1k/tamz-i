@@ -4,8 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+	<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <h1>Hello world</h1>
+<ion-content>
+    <ion-card>
+        <ion-card-content>
+            <ion-item>
+                <ion-input id="name_input" placeholder="Enter your name"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+    <ion-card>
+        <ion-datetime id="date_time_selector" presentation="date"></ion-datetime>
+    </ion-card>
+    <ion-card>
+        <ion-card-content id="info_card">
+            <span id="name_display">To display days until your birthday, please input your name and select date. Then click the Calculate button.</span><span id="result"></span>
+        </ion-card-content>
+    </ion-card>
+    <div id="button_div">
+        <ion-button id="calculate_button" expand="block" fill="solid" shape="round">
+            Calculate
+        </ion-button>
+    </div>
+</ion-content>
+<script src="./scripts.js"></script>
 </body>
 </html>
