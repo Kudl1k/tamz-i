@@ -1,0 +1,20 @@
+#todo-item-card{
+    padding-left: 1rem;
+}
+
+#todo-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#checkbox-item{
+    height: 48px;
+    width: 48px;
+}
+
+#todo-text{
+    font-size: x-large;
+    padding: 0px;
+    max-lines: 1;
+}
