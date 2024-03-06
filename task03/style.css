@@ -1,0 +1,9 @@
+/* Centered Row with space between */
+#centered_row{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 0 20px;
+}

@@ -12,7 +12,114 @@
 </head>
 <body>
 <ion-content>
-    <h1>Hello World</h1>
+
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>
+                Datum tankování
+            </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Čerpací stanice</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-input type="text" placeholder="Název"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Cena za tankování</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-input label="Cena" type="number" placeholder="Cena za tankování"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-checkbox labelPlacement="end">Platba kartou</ion-checkbox>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Typ paliva</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-radio-group value="diesel">
+                <ion-item>
+                    <ion-label>Diesel</ion-label>
+                    <ion-radio slot="start" value="diesel"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Nafta</ion-label>
+                    <ion-radio slot="start" value="nafta"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Super 95</ion-label>
+                    <ion-radio slot="start" value="super95"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Super 98</ion-label>
+                    <ion-radio slot="start" value="super98"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Počet litrů</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-input type="number" label="l" labelPlacement="end" placeholder="Počet litrů"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>Stav tachometru</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-input type="number" placeholder="Stav"></ion-input>
+            </ion-item>
+        </ion-card-content>
+    </ion-card>
+
+    <div id="centered_row">
+        <ion-button>
+            <ion-icon slot="start" name="cloud-download"></ion-icon>
+            Save
+        </ion-button>
+        <ion-button>
+            <ion-icon slot="start" name="cloud-upload"></ion-icon>
+            Load
+        </ion-button>
+    </div>
+
+    
+    
+
+
+    <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+        <ion-datetime id="datetime"></ion-datetime>
+    </ng-template>
+    </ion-modal>
+    
+
 </ion-content>
 <script src="./scripts.js"></script>
 </body>
