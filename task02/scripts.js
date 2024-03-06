@@ -62,7 +62,7 @@ confirm_button.addEventListener('click', (ev) => {
         getZodiacSign(selectedDate)
     } else {
         document.getElementById("name_display").innerHTML = name_value + " you will have birthday in "
-        document.getElementById("result").innerHTML = date_time + " days"
+        document.getElementById("result").innerHTML = date_time + " days and it will be " + getDayName(selectedDate,"cs-CZ") + "!"
         if (zodiacImg != null){
             zodiacImg.remove()
         }
@@ -119,4 +119,10 @@ function createImage(zodiac,path){
     zodiacImg.setAttribute("src", path);
     zodiacImg.setAttribute("alt", zodiac)
     document.getElementById("info_card").appendChild(zodiacImg)
+}
+
+function getDayName(dateStr, locale)
+{
+    var date = new Date(dateStr);
+    return date.toLocaleDateString(locale, { weekday: 'long' });        
 }
