@@ -21,7 +21,7 @@
             </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-            <ion-datetime-button datetime="datetime"></ion-datetime-button>
+            <ion-datetime-button id="dateInput" datetime="datetime"></ion-datetime-button>
         </ion-card-content>
     </ion-card>
 
@@ -31,7 +31,7 @@
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-input type="text" placeholder="Název"></ion-input>
+                <ion-input id="gasStationInput" type="text" placeholder="Název"></ion-input>
             </ion-item>
         </ion-card-content>
     </ion-card>
@@ -42,10 +42,10 @@
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-input label="Cena" type="number" placeholder="Cena za tankování"></ion-input>
+                <ion-input id="priceInput"  label="Cena" type="number" placeholder="Cena za tankování"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-checkbox labelPlacement="end">Platba kartou</ion-checkbox>
+                <ion-checkbox id="cardPaymentCheckbox" labelPlacement="end">Platba kartou</ion-checkbox>
             </ion-item>
         </ion-card-content>
     </ion-card>
@@ -55,7 +55,7 @@
             <ion-card-subtitle>Typ paliva</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-            <ion-radio-group value="diesel">
+            <ion-radio-group id="fuelTypeRadioGroup" value="diesel">
                 <ion-item>
                     <ion-label>Diesel</ion-label>
                     <ion-radio slot="start" value="diesel"></ion-radio>
@@ -82,7 +82,7 @@
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-input type="number" label="l" labelPlacement="end" placeholder="Počet litrů"></ion-input>
+                <ion-input id="litersInput" type="number" label="l" labelPlacement="end" placeholder="Počet litrů"></ion-input>
             </ion-item>
         </ion-card-content>
     </ion-card>
@@ -93,17 +93,17 @@
         </ion-card-header>
         <ion-card-content>
             <ion-item>
-                <ion-input type="number" placeholder="Stav"></ion-input>
+                <ion-input id="stateInput" type="number" placeholder="Stav"></ion-input>
             </ion-item>
         </ion-card-content>
     </ion-card>
 
     <div id="centered_row">
-        <ion-button>
+        <ion-button id="saveButton">
             <ion-icon slot="start" name="cloud-download"></ion-icon>
             Save
         </ion-button>
-        <ion-button>
+        <ion-button id="loadButton">
             <ion-icon slot="start" name="cloud-upload"></ion-icon>
             Load
         </ion-button>
