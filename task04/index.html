@@ -32,7 +32,7 @@
                     <ion-card-subtitle>Name</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-input type="text" placeholder="ABC123"></ion-input>
+                    <ion-input id="input_name" type="text" placeholder="ABC123"></ion-input>
                 </ion-card-content>
             </ion-card>
             <ion-card>
@@ -40,7 +40,7 @@
                     <ion-card-subtitle>Age</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-input type="number" placeholder="25"></ion-input>
+                    <ion-input id="input_age" type="number" placeholder="25"></ion-input>
                 </ion-card-content>
             </ion-card>
             <ion-card>
@@ -48,7 +48,7 @@
                     <ion-card-subtitle>Gender</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-radio-group value="male">
+                    <ion-radio-group id="input_gender" value="">
                         <ion-radio value="male">Male</ion-radio><br />
                         <ion-radio value="female">Female</ion-radio><br />
                     </ion-radio-group>
@@ -59,25 +59,38 @@
                     <ion-card-subtitle>Measurements</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-range aria-label="Range with pin" [pin]="true" [pinFormatter]="pinFormatter"></ion-range>
-                    Your height
+                    <ion-range id="input_height" aria-label="Range with pin" pin="true" min="30" max="250"></ion-range>
+                    Your height <span id="height"></span>
+                    <ion-range id="input_weight" aria-label="Range with pin" pin="true" min="30" max="250"></ion-range>
+                    Your weight <span id="weight"></span>
                 </ion-card-content>
             </ion-card>
-
+            <div id="centered_row">
+                <ion-button id="calculate-button" expand="inline-block" fill="solid" shape="round">
+                    Calculate
+                </ion-button>
+            </div>
         </ion-content>
       </div>
     </ion-tab>
     <ion-tab tab="history">
       <ion-nav id="history-nav"></ion-nav>
       <div id="history-page">
+        <ion-header translucent="true">
+            <ion-toolbar>
+                <ion-title>History</ion-title>
+            </ion-toolbar>
+        </ion-header>
     
         <ion-content fullscreen="true">
             <ion-header collapse="condense">
                 <ion-toolbar>
-                  <ion-title size="large">Header</ion-title>
+                    <ion-title size="large">History</ion-title>
                 </ion-toolbar>
-              </ion-header>
-          <div class="example-content">History content</div>
+            </ion-header>
+
+
+            
         </ion-content>
       </div>
     </ion-tab>
@@ -92,6 +105,7 @@
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
+  <ion-action-sheet trigger="calculate-button" header="Actions"></ion-action-sheet>
 <script src="./scripts.js"></script>
 </body>
 </html>
