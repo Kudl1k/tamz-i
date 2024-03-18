@@ -56,10 +56,11 @@
             </ion-card>
             <ion-card>
                 <ion-card-header>
-                    <ion-card-subtitle>Measurement</ion-card-subtitle>
+                    <ion-card-subtitle>Measurements</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
-                    <ion-range aria-label="Volume"></ion-range>
+                    <ion-range aria-label="Range with pin" [pin]="true" [pinFormatter]="pinFormatter"></ion-range>
+                    Your height
                 </ion-card-content>
             </ion-card>
 
