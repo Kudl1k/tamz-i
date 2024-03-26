@@ -1,44 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
-	<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-	<link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-    <title>Task05</title>
-<script type="module">
-    const main = async () => {
-      const name = 'KUD0132';
-      const URL = 'https://homel.vsb.cz/~mor03/TAMZ/TAMZ22.php';
-      const params = new URLSearchParams();
-      params.append('user', name);
-      params.append('timestamp', Date.now().toString());
-    
-      try {
-        const response = await fetch(`${URL}?${params.toString()}`);
-        const token = await response.text();
-  
-        const response2 = await fetch(URL, {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        });
-        
-        const data = await response2.text();
-  
-        document.getElementById('data-display').textContent = data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    main();
-  </script>
-  </head>
-  <body>
-  <h1>Data Received:</h1>
-  <p id="data-display">Loading data...</p>
-  </body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <title>Task05</title>
+</head>
+<body>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Data Received:</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p id="data-display">Press button to fetch data</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-button id="fetch-data"  expand="block" fill="solid" shape="round">
+    Fetch data
+  </ion-button>
+</ion-content>
+  <script src="./scripts.js"></script>
+</body>
 </html>
