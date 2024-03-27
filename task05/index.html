@@ -11,17 +11,17 @@
 </head>
 <body>
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Data Received:</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <p id="data-display">Press button to fetch data</p>
-    </ion-card-content>
-  </ion-card>
-  <ion-button id="fetch-data"  expand="block" fill="solid" shape="round">
-    Fetch data
-  </ion-button>
+  <ion-input id="url" placeholder="Enter URL"></ion-input>
+<ion-input id="login" placeholder="Enter Login"></ion-input>
+<ion-button id="get-code" expand="block" fill="solid" shape="round">
+  Get Code
+</ion-button>
+<ion-textarea id="received" readonly></ion-textarea>
+<ion-textarea id="decoded" readonly></ion-textarea>
+<ion-button id="send-code" expand="block" fill="solid" shape="round">
+  Send Code
+</ion-button>
+<ion-text id="message"></ion-text>
 </ion-content>
   <script src="./scripts.js"></script>
 </body>
