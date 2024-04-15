@@ -92,6 +92,37 @@ function displayItems() {
     }
 }
 
+function displayHistory() {
+    const items = getItems();
+    const shoplistHistory = document.getElementById('shoplist_item_list_history');
+    let html = '';
+    let checkedItems = items.filter(item => item.checked);
+    let itemsByDate = {};
+    for (let item of checkedItems) {
+        const date = new Date(item.dateChecked);
+        const formattedDate = date.toLocaleDateString('en-CA', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        if (!itemsByDate[formattedDate]) {
+            itemsByDate[formattedDate] = [];
+        }
+        itemsByDate[formattedDate].push(item);
+    }
+    for (let date in itemsByDate) {
+        html += `
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-subtitle>Checked ${itemsByDate[date].length} items</ion-card-subtitle>
+                    <ion-card-title>${date}</ion-card-title>
+                </ion-card-header>
+            </ion-card>
+        `;
+    }
+    shoplistHistory.innerHTML = html;
+}
+
 function checkItem(id) {
     let items = getItems();
     for (let item of items) {
@@ -103,6 +134,10 @@ function checkItem(id) {
     }
     localStorage.setItem('items', JSON.stringify(items));
     displayItems();
+    displayHistory();
 }
+
+
 createAddShopingItemModal()
 displayItems()
+displayHistory()
