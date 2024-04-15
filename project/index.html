@@ -6,13 +6,79 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Shopping List</title>
 </head>
 <body>
-<ion-content>
-    <h1>Hello World</h1>
-</ion-content>
+    <div id="shoplist_add_modal"></div>
+
+    <ion-tabs>
+        <ion-tab tab="home">
+          <ion-nav id="home-nav"></ion-nav>
+          <div id="home-page">
+            <ion-header translucent="true">
+                <ion-toolbar>
+                    <ion-title>List</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button id="add_shoplist_item_button" fill="clear">
+                          <ion-icon slot="icon-only" name="add"></ion-icon>
+                        </ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content fullscreen="true" >
+                <ion-header collapse="condense">
+                    <ion-toolbar>
+                        <ion-title size="large">Shopping List</ion-title>
+                    </ion-toolbar>
+                </ion-header>
+    
+                <div id="shoplist_item_list"></div>
+
+            </ion-content>
+          </div>
+        </ion-tab>
+        <ion-tab tab="history">
+          <ion-nav id="history-nav"></ion-nav>
+          <div id="history-page">
+            <ion-header translucent="true">
+                <ion-toolbar>
+                    <ion-title>History</ion-title>
+                </ion-toolbar>
+            </ion-header>
+        
+            <ion-content fullscreen="true">
+                <ion-header collapse="condense">
+                    <ion-toolbar>
+                        <ion-title size="large">History</ion-title>
+                    </ion-toolbar>
+                </ion-header>
+                
+                <ion-card>
+                    <ion-card-header>
+                        <ion-card-subtitle>Checked 10 items</ion-card-subtitle>
+                        <ion-card-title>2020-03-01</ion-card-title>
+                    </ion-card-header>
+                </ion-card>
+                
+            </ion-content>
+          </div>
+        </ion-tab>
+        <ion-tab-bar slot="bottom">
+          <ion-tab-button tab="home">
+            <ion-icon name="list-outline"></ion-icon>
+            List
+          </ion-tab-button>
+          <ion-tab-button tab="history">
+            <ion-icon name="time-outline"></ion-icon>
+            History
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+
+
+
+
 <script src="./scripts.js"></script>
 </body>
 </html>

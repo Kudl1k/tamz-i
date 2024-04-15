@@ -1,0 +1,16 @@
+.shoplist-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shoplist-text{
+    padding: 0px;
+    max-lines: 1;
+}
+
+#shoplist-checkbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
