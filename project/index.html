@@ -19,11 +19,6 @@
             <ion-header translucent="true">
                 <ion-toolbar>
                     <ion-title>List</ion-title>
-                    <ion-buttons slot="end">
-                        <ion-button id="add_shoplist_item_button" fill="clear">
-                          <ion-icon slot="icon-only" name="add"></ion-icon>
-                        </ion-button>
-                    </ion-buttons>
                 </ion-toolbar>
             </ion-header>
             <ion-content fullscreen="true" >
@@ -33,10 +28,20 @@
                     </ion-toolbar>
                 </ion-header>
     
+                  
+
                 <div id="shoplist_item_list"></div>
 
+                
+
             </ion-content>
+            <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+              <ion-fab-button id="add_shoplist_item_button">
+                  <ion-icon name="add"></ion-icon>
+              </ion-fab-button>
+            </ion-fab>
           </div>
+          
         </ion-tab>
         <ion-tab tab="history">
           <ion-nav id="history-nav"></ion-nav>

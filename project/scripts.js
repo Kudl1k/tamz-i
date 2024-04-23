@@ -1,9 +1,20 @@
 let shopListAddModal;
+uniqueItems = new Set()
 function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
+    const items = getItems();
+
+    let recentItemsHTML = '';
+    for (let item of items) {
+        uniqueItems.add(item.text)
+    }
+    console.log(uniqueItems)
+    for (let item of uniqueItems) {
+        recentItemsHTML += `<p class="recent-item">${item}</p>`;
+    }
 
     const modalHTML = `
-        <ion-modal id="shop_list_add_modal_w" trigger="add_shoplist_item_button">
+        <ion-modal id="shop_list_add_modal_w" trigger="">
             <ion-header>
                 <ion-toolbar>
                     <ion-buttons slot="start">
@@ -16,14 +27,43 @@ function createAddShopingItemModal(){
                 </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
-                <ion-item>
-                    <ion-input id="add_shoplist_item_name" label="Enter your item" label-placement="stacked" type="text" placeholder="Hamburgers (2 pieces)"></ion-input>
-                </ion-item>
+                <div class="input-container">
+                    <ion-item>
+                        <ion-input id="add_shoplist_item_name" label="Enter your item" label-placement="stacked" type="text" placeholder="Hamburgers"></ion-input>
+                    </ion-item>
+                    <ion-item>
+                        <ion-input id="add_shoplist_item_pieces" class="small-input" label="Pieces" label-placement="stacked" value="1" type="number"  placeholder="1" min="1" max="9"></ion-input>
+                    </ion-item>
+                </div>
+                <div id="recent-items">
+                    <h5>Recent Items</h5>
+                    ${recentItemsHTML}
+                </div>
             </ion-content>
         </ion-modal>
     `;
     modal_container.innerHTML = modalHTML;
     shopListAddModal = document.getElementById('shop_list_add_modal_w');
+}
+
+function updateRecentItems() {
+    const items = getItems();
+    console.log(items);
+
+    let recentItemsHTML = '';
+    uniqueItems = new Set();
+    for (let item of items) {
+        uniqueItems.add(item.text);
+    }
+    console.log(uniqueItems)
+    for (let item of uniqueItems) {
+        recentItemsHTML += `<p class="recent-item" onclick="fillInput('${item}')">${item}</p>`;
+    }
+    document.getElementById('recent-items').innerHTML = recentItemsHTML;
+}
+
+function fillInput(text) {
+    document.getElementById('add_shoplist_item_name').value = text;
 }
 
 function cancel(){
@@ -33,13 +73,16 @@ function cancel(){
 
 function saveItem() {
     const text = document.getElementById('add_shoplist_item_name').value
+    const pieces = document.getElementById('add_shoplist_item_pieces').value
     const checked = false
     const items = getItems()
 
     const item = {
         id: items.length,
         text: text,
+        pieces: pieces,
         checked: checked,
+        archived: false,
         dateChecked: checked ? new Date() : null
     };
 
@@ -65,20 +108,22 @@ function displayItems() {
 
     let html = '';
     for (let item of items) {
-        if (!item.checked){
+        if (!item.archived){
             html += `
-                <ion-card>
-                    <ion-card-content>
-                        <ion-row class="shoplist-item">
-                            <ion-col size="10">
-                                <p class="shoplist-text">${item.text}</p>
-                            </ion-col>
-                            <ion-col size="2" class="shoplist-checkbox">
-                                <ion-checkbox ${item.checked ? 'checked' : ''} data-id="${item.id}"></ion-checkbox>
-                            </ion-col>
-                        </ion-row>
-                    </ion-card-content>
-                </ion-card>
+            <ion-item-sliding>
+                <ion-item>
+                    <ion-label>
+                        <ion-checkbox label-placement="end" slot="start" ${item.checked ? 'checked' : ''} data-id="${item.id}"> <span class="shoplist-text ${item.checked ? 'striked' : ''}" style="margin-left: 10px; flex: 1;">${item.text}</span></ion-checkbox>
+                    </ion-label>
+                    <ion-note class="shoplist-text ${item.checked ? 'striked' : ''}">${item.pieces}x</ion-note>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" onClick="archiveItem(${item.id})">Archive</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        
+        
+
             `;
         }
     }
@@ -127,8 +172,8 @@ function checkItem(id) {
     let items = getItems();
     for (let item of items) {
         if (item.id == id) {
-            item.checked = true;
-            item.dateChecked = new Date();
+            item.checked = !item.checked;
+            item.dateChecked = item.checked ? new Date() : null;
             break;
         }
     }
@@ -137,7 +182,27 @@ function checkItem(id) {
     displayHistory();
 }
 
+function archiveItem(id) {
+    let items = getItems();
+    for (let item of items) {
+        if (item.id == id) {
+            item.archived = true;
+            break;
+        }
+    }
+    localStorage.setItem('items', JSON.stringify(items));
+    displayItems();
+    displayHistory();
+}
 
-createAddShopingItemModal()
+function openModal() {
+    shopListAddModal.present();
+    updateRecentItems();
+}
+
+
 displayItems()
+createAddShopingItemModal()
 displayHistory()
+
+document.getElementById('add_shoplist_item_button').addEventListener('click', openModal);
