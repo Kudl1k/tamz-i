@@ -8,7 +8,6 @@ function createAddShopingItemModal(){
     for (let item of items) {
         uniqueItems.add(item.text)
     }
-    console.log(uniqueItems)
     for (let item of uniqueItems) {
         recentItemsHTML += `<p class="recent-item">${item}</p>`;
     }
@@ -48,14 +47,12 @@ function createAddShopingItemModal(){
 
 function updateRecentItems() {
     const items = getItems();
-    console.log(items);
 
     let recentItemsHTML = '';
     uniqueItems = new Set();
     for (let item of items) {
         uniqueItems.add(item.text);
     }
-    console.log(uniqueItems)
     for (let item of uniqueItems) {
         recentItemsHTML += `<p class="recent-item" onclick="fillInput('${item}')">${item}</p>`;
     }
