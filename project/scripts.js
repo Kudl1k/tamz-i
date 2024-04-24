@@ -34,10 +34,13 @@ function createAddShopingItemModal(){
                         <ion-input id="add_shoplist_item_pieces" class="small-input" label="Pieces" label-placement="stacked" value="1" type="number"  placeholder="1" min="1" max="9"></ion-input>
                     </ion-item>
                 </div>
+                <h5>Recent Items</h5>
+                <ion-list>
                 <div id="recent-items">
-                    <h5>Recent Items</h5>
-                    ${recentItemsHTML}
+
+                    ${recentItemsHTML}        
                 </div>
+                </ion-list>
             </ion-content>
         </ion-modal>
     `;
@@ -54,7 +57,7 @@ function updateRecentItems() {
         uniqueItems.add(item.text);
     }
     for (let item of uniqueItems) {
-        recentItemsHTML += `<p class="recent-item" onclick="fillInput('${item}')">${item}</p>`;
+        recentItemsHTML += `<ion-item class="recent-item" onclick="fillInput('${item}')"><ion-label>${item}</ion-label></ion-item>`;
     }
     document.getElementById('recent-items').innerHTML = recentItemsHTML;
 }
