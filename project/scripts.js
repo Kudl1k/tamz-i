@@ -1,4 +1,5 @@
 let shopListAddModal;
+let shopListEditModal;
 uniqueItems = new Set()
 function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
@@ -106,9 +107,10 @@ function displayItems() {
     const items = getItems();
     const shoplist = document.getElementById('shoplist_item_list');
 
-    let html = '';
+    let html = '<ion-list>';
+    let rest = '';
     for (let item of items) {
-        if (!item.archived){
+        if (!item.archived && !item.checked){
             html += `
             <ion-item-sliding>
                 <ion-item>
@@ -121,13 +123,24 @@ function displayItems() {
                     <ion-item-option color="danger" onClick="archiveItem(${item.id})">Archive</ion-item-option>
                 </ion-item-options>
             </ion-item-sliding>
-        
-        
-
+            `;
+        } else if (!item.archived && item.checked){
+            rest += `
+            <ion-item-sliding>
+                <ion-item>
+                    <ion-label>
+                        <ion-checkbox label-placement="end" slot="start" ${item.checked ? 'checked' : ''} data-id="${item.id}"> <span class="shoplist-text ${item.checked ? 'striked' : ''}" style="margin-left: 10px; flex: 1;">${item.text}</span></ion-checkbox>
+                    </ion-label>
+                    <ion-note class="shoplist-text ${item.checked ? 'striked' : ''}">${item.pieces}x</ion-note>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger" onClick="archiveItem(${item.id})">Archive</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
             `;
         }
     }
-    shoplist.innerHTML = html;
+    shoplist.innerHTML = html + rest + '</ion-list>';
     const checkboxes = shoplist.querySelectorAll('ion-checkbox');
     for (let checkbox of checkboxes) {
         checkbox.addEventListener('click', function() {
@@ -174,6 +187,13 @@ function checkItem(id) {
         if (item.id == id) {
             item.checked = !item.checked;
             item.dateChecked = item.checked ? new Date() : null;
+            if (item.checked){
+                let audio = new Audio('/sounds/tamz-check.mp3');
+                audio.play();
+            } else {
+                let audio = new Audio('/sounds/tamz-uncheck.mp3');
+                audio.play();
+            }
             break;
         }
     }
