@@ -2,9 +2,7 @@ package cz.kudladev.backend;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +22,14 @@ public class ItemController {
         return itemService.getItemById(id);
     }
 
+    @PostMapping("/items")
+    public Item saveItem(@RequestBody Item item) {
+        return itemService.createItem(item);
+    }
 
-
+    @DeleteMapping("/items/{id}")
+    public void deleteItem(@PathVariable Long id) {
+        itemService.deleteItem(id);
+    }
 
 }
