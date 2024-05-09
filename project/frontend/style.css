@@ -8,11 +8,23 @@
     padding: 0px;
     max-lines: 1;
 }
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 20px;
+}
 
 #shoplist-checkbox{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.reverse-order {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
 }
 
 .input-container {

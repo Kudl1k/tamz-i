@@ -12,6 +12,7 @@
 <body>
     <div id="shoplist_add_modal"></div>
     <div id="shoplist_edit_modal"></div>
+    <div id="settings_modal"></div>
 
     <ion-tabs>
         <ion-tab tab="home">
@@ -20,6 +21,12 @@
             <ion-header translucent="true">
                 <ion-toolbar>
                     <ion-title>List</ion-title>
+
+                    <ion-buttons slot="end">
+                      <ion-button id="settings_button" fill="clear">
+                        <ion-icon slot="icon-only" name="cog"></ion-icon>
+                      </ion-button>
+                  </ion-buttons>
                 </ion-toolbar>
             </ion-header>
             <ion-content fullscreen="true" >

@@ -1,5 +1,6 @@
 let shopListAddModal;
 let shopListEditModal;
+let settingsModal;
 uniqueItems = new Set()
 function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
@@ -69,6 +70,7 @@ function fillInput(text) {
 
 function cancel(){
     shopListAddModal.dismiss(null,'cancel')
+    settingsModal.dismiss(null,'cancel')
 }
 
 
@@ -88,23 +90,43 @@ function saveItem() {
     };
 
     items.push(item);
-    localStorage.setItem('items', JSON.stringify(items));
+    if (settings == 'local_storage'){
+        localStorage.setItem('items', JSON.stringify(items));
+    } else if (settings == 'file') {
+        
+    } else if (settings == 'api') {
+
+    }
     displayItems()
     cancel()
 }
 
 function getItems() {
-    const items = localStorage.getItem('items');
-
-    if (items) {
-        return JSON.parse(items);
+    if (settings == 'local_storage'){
+        let items = localStorage.getItem('items');
+        return Promise.resolve(JSON.parse(items));
+    } else if (settings == 'file') {
+        return fetch("./items.json")
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .catch((error) => console.error("Unable to fetch data:", error));
+    } else if (settings == 'api') {
+        // Implement API fetching here
     }
 
-    return [];
+    return Promise.resolve([]);
 }
 
 function displayItems() {
-    const items = getItems();
+    let items = null
+    getItems().then(loaded_items => {
+        console.log(loaded_items);
+        items = loaded_items
+    });
     const shoplist = document.getElementById('shoplist_item_list');
 
     let html = '<ion-list>';
@@ -197,7 +219,14 @@ function checkItem(id) {
             break;
         }
     }
-    localStorage.setItem('items', JSON.stringify(items));
+    if (settings == 'local_storage'){
+        localStorage.setItem('items', JSON.stringify(items));
+    } else if (settings == 'file') {
+
+    } else if (settings == 'api') {
+
+    }
+    
     displayItems();
     displayHistory();
 }
@@ -210,7 +239,13 @@ function archiveItem(id) {
             break;
         }
     }
-    localStorage.setItem('items', JSON.stringify(items));
+    if (settings == 'local_storage'){
+        localStorage.setItem('items', JSON.stringify(items));
+    } else if (settings == 'file') {
+
+    } else if (settings == 'api') {
+
+    }
     displayItems();
     displayHistory();
 }
@@ -220,9 +255,104 @@ function openModal() {
     updateRecentItems();
 }
 
+function openSettingsModal() {
+    settingsModal.present();
+}
 
+function fetchItems() {
+    fetch('http://localhost:8080/items')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        let apiitems = []
+        apiitems = data;
+        console.log(apiitems)
+    })
+    .catch(error => {
+        console.error('An error occurred:', error);
+    });
+}
+
+function createSettingsModal(){
+    const modal_container = document.getElementById('settings_modal');
+    loadSettings()
+    const modalHTML = `
+        <ion-modal id="settings_modal_w" trigger="">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-button onclick="cancel()">Cancel</ion-button>
+                    </ion-buttons>
+                    <ion-title>Settings</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button onclick="saveSettings()" strong="true">Save</ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+                <h1>Load from:</h1>
+                    <ion-list>
+                        <ion-radio-group id="settings_group" value="${settings}">
+                        <ion-item class="reverse-order">
+                            <ion-radio value="local_storage" justify="start">Local Storage</ion-radio>
+                        </ion-item>
+                        <ion-item class="reverse-order">
+                            <ion-radio value="file" justify="start">File</ion-radio>
+                        </ion-item>
+                        <ion-item class="reverse-order">
+                            <ion-radio value="api" justify="start">Api</ion-radio>
+                        </ion-item>
+                        </ion-radio-group>
+                    </ion-list> 
+                    <div class="button-container">
+                        <ion-button onclick="saveItemsToFile()" strong="true">Save to File</ion-button>
+                    </div>
+            </ion-content>
+        </ion-modal>
+    `;
+    modal_container.innerHTML = modalHTML;
+    settingsModal = document.getElementById('settings_modal_w')
+}
+
+function saveSettings() {
+    const radioGroup = document.getElementById('settings_group');
+    const selectedValue = radioGroup.value;
+    localStorage.setItem('settings', selectedValue);
+    loadSettings();
+    displayItems()
+    cancel()
+}
+let settings;
+
+function loadSettings() {
+    settings = localStorage.getItem('settings');
+    if (settings === null) {
+        settings = 'local_storage';
+    }
+}
+
+function saveItemsToFile() {
+    const items = getItems();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", "items.json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+loadSettings();
 displayItems()
 createAddShopingItemModal()
+createSettingsModal()
 displayHistory()
+fetchItems()
+
 
 document.getElementById('add_shoplist_item_button').addEventListener('click', openModal);
+document.getElementById('settings_button').addEventListener('click',openSettingsModal);
