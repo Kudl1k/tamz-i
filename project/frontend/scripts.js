@@ -1,10 +1,12 @@
 let shopListAddModal;
 let shopListEditModal;
 let settingsModal;
+let loaded = false;
+
 uniqueItems = new Set()
-function createAddShopingItemModal(){
+async function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
-    const items = getItems();
+    let items = await getItems();
 
     let recentItemsHTML = '';
     for (let item of items) {
@@ -90,43 +92,46 @@ function saveItem() {
     };
 
     items.push(item);
-    if (settings == 'local_storage'){
+    if (settings == 'local_storage' || settings == 'file'){
         localStorage.setItem('items', JSON.stringify(items));
     } else if (settings == 'file') {
         
-    } else if (settings == 'api') {
-
     }
     displayItems()
     cancel()
 }
 
-function getItems() {
+async function getItems() {
+    let items = []
     if (settings == 'local_storage'){
-        let items = localStorage.getItem('items');
-        return Promise.resolve(JSON.parse(items));
+        items = localStorage.getItem('items');
+        if (items) {
+            return JSON.parse(items);
+        }    
     } else if (settings == 'file') {
-        return fetch("./items.json")
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .catch((error) => console.error("Unable to fetch data:", error));
+        if (loaded) {
+            return items || [];
+        }
+        loaded = true
+        try {
+            const response = await fetch('items.json');
+            items = await response.json();
+            console.log(items);
+            return items;
+        } catch(error) {
+            console.error('Error:', error);
+        }
     } else if (settings == 'api') {
-        // Implement API fetching here
-    }
 
-    return Promise.resolve([]);
+    } else {
+        return [];
+    }
+    return items || [];
 }
 
-function displayItems() {
-    let items = null
-    getItems().then(loaded_items => {
-        console.log(loaded_items);
-        items = loaded_items
-    });
+async function displayItems() {
+    let items = await getItems();
+    console.log(items);
     const shoplist = document.getElementById('shoplist_item_list');
 
     let html = '<ion-list>';
@@ -172,8 +177,8 @@ function displayItems() {
     }
 }
 
-function displayHistory() {
-    const items = getItems();
+async function displayHistory() {
+    let items = await getItems();
     const shoplistHistory = document.getElementById('shoplist_item_list_history');
     let html = '';
     let checkedItems = items.filter(item => item.checked);
@@ -330,6 +335,7 @@ let settings;
 
 function loadSettings() {
     settings = localStorage.getItem('settings');
+    loaded = false
     if (settings === null) {
         settings = 'local_storage';
     }
