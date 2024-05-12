@@ -4,6 +4,8 @@ let settingsModal;
 let loaded = false;
 let items = [];
 
+const api = 'http://172.31.96.1:8080/'
+
 uniqueItems = new Set()
 async function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
@@ -89,14 +91,35 @@ async function saveItem() {
     };
 
     items.push(item);
+    console.log(item)
+    console.log(items);
     if (settings == 'local_storage'){
         localStorage.setItem('items', JSON.stringify(items));
     } else if (settings == 'file') {
         //TODO: save to file?
     } else if (settings == 'api') {
-        
+
+        const organizedItem = {
+            text: item.text,
+            pieces: item.pieces,
+            checked: item.checked,
+            archived: item.archived,
+            dateChecked: item.dateChecked
+        };
+        console.log(organizedItem)
+        const response = await fetch(`${api}items`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(organizedItem)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log('Item sended to api')
     }
-    displayItems()
+    await displayItems()
     cancel()
 }
 
@@ -104,7 +127,6 @@ async function getItems() {
     items = []
     if (settings == 'local_storage'){
         items = JSON.parse(localStorage.getItem('items'));
-        console.log(items) 
     } else if (settings == 'file') {
         if (loaded) {
             return items || [];
@@ -119,10 +141,11 @@ async function getItems() {
             console.error('Error:', error);
         }
     } else if (settings == 'api') {
-
+        items = await fetchItems();
     } else {
         return [];
     }
+    console.log(items)
     return items || [];
 }
 
@@ -220,7 +243,6 @@ async function checkItem(id) {
     if (settings == 'local_storage'){
         localStorage.setItem('items', JSON.stringify(items));
     } else if (settings == 'file') {
-
     } else if (settings == 'api') {
 
     }
@@ -256,8 +278,8 @@ function openSettingsModal() {
     settingsModal.present();
 }
 
-function fetchItems() {
-    fetch('http://localhost:8080/items')
+async function fetchItems() {
+    return fetch(`${api}items`)
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -265,9 +287,7 @@ function fetchItems() {
         return response.json();
     })
     .then(data => {
-        let apiitems = []
-        apiitems = data;
-        console.log(apiitems)
+        return data
     })
     .catch(error => {
         console.error('An error occurred:', error);
@@ -315,11 +335,12 @@ function createSettingsModal(){
     settingsModal = document.getElementById('settings_modal_w')
 }
 
-function saveSettings() {
+async function saveSettings() {
     const radioGroup = document.getElementById('settings_group');
     const selectedValue = radioGroup.value;
     localStorage.setItem('settings', selectedValue);
     loadSettings();
+    await getItems();
     displayItems()
     cancel()
 }
@@ -344,13 +365,19 @@ async function saveItemsToFile() {
     downloadAnchorNode.remove();
 }
 
-loadSettings();
-getItems();
-displayItems()
-createAddShopingItemModal()
-createSettingsModal()
-displayHistory()
-fetchItems()
+async function start() {
+    loadSettings();
+    await getItems();
+    displayItems()
+    createAddShopingItemModal()
+    createSettingsModal()
+    displayHistory()
+    fetchItems()
+}
+
+start()
+
+
 
 
 document.getElementById('add_shoplist_item_button').addEventListener('click', openModal);
