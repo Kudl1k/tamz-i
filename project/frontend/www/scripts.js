@@ -2,11 +2,11 @@ let shopListAddModal;
 let shopListEditModal;
 let settingsModal;
 let loaded = false;
+let items = [];
 
 uniqueItems = new Set()
 async function createAddShopingItemModal(){
     const modal_container = document.getElementById('shoplist_add_modal');
-    let items = await getItems();
 
     let recentItemsHTML = '';
     for (let item of items) {
@@ -52,9 +52,7 @@ async function createAddShopingItemModal(){
     shopListAddModal = document.getElementById('shop_list_add_modal_w');
 }
 
-function updateRecentItems() {
-    const items = getItems();
-
+async function updateRecentItems() {
     let recentItemsHTML = '';
     uniqueItems = new Set();
     for (let item of items) {
@@ -76,11 +74,10 @@ function cancel(){
 }
 
 
-function saveItem() {
+async function saveItem() {
     const text = document.getElementById('add_shoplist_item_name').value
     const pieces = document.getElementById('add_shoplist_item_pieces').value
     const checked = false
-    const items = getItems()
 
     const item = {
         id: items.length,
@@ -92,9 +89,11 @@ function saveItem() {
     };
 
     items.push(item);
-    if (settings == 'local_storage' || settings == 'file'){
+    if (settings == 'local_storage'){
         localStorage.setItem('items', JSON.stringify(items));
     } else if (settings == 'file') {
+        //TODO: save to file?
+    } else if (settings == 'api') {
         
     }
     displayItems()
@@ -102,12 +101,10 @@ function saveItem() {
 }
 
 async function getItems() {
-    let items = []
+    items = []
     if (settings == 'local_storage'){
-        items = localStorage.getItem('items');
-        if (items) {
-            return JSON.parse(items);
-        }    
+        items = JSON.parse(localStorage.getItem('items'));
+        console.log(items) 
     } else if (settings == 'file') {
         if (loaded) {
             return items || [];
@@ -130,8 +127,6 @@ async function getItems() {
 }
 
 async function displayItems() {
-    let items = await getItems();
-    console.log(items);
     const shoplist = document.getElementById('shoplist_item_list');
 
     let html = '<ion-list>';
@@ -178,7 +173,6 @@ async function displayItems() {
 }
 
 async function displayHistory() {
-    let items = await getItems();
     const shoplistHistory = document.getElementById('shoplist_item_list_history');
     let html = '';
     let checkedItems = items.filter(item => item.checked);
@@ -208,8 +202,7 @@ async function displayHistory() {
     shoplistHistory.innerHTML = html;
 }
 
-function checkItem(id) {
-    let items = getItems();
+async function checkItem(id) {
     for (let item of items) {
         if (item.id == id) {
             item.checked = !item.checked;
@@ -236,8 +229,7 @@ function checkItem(id) {
     displayHistory();
 }
 
-function archiveItem(id) {
-    let items = getItems();
+async function archiveItem(id) {
     for (let item of items) {
         if (item.id == id) {
             item.archived = true;
@@ -341,8 +333,8 @@ function loadSettings() {
     }
 }
 
-function saveItemsToFile() {
-    const items = getItems();
+async function saveItemsToFile() {
+    const items = await getItems();
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href",     dataStr);
@@ -353,6 +345,7 @@ function saveItemsToFile() {
 }
 
 loadSettings();
+getItems();
 displayItems()
 createAddShopingItemModal()
 createSettingsModal()
